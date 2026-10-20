@@ -78,6 +78,7 @@ Edit `sessions/432hz-deep-sleep.html` and `index.html`:
 - Website: https://wholehum.github.io/
 - X: https://x.com/WholeHum
 - Bluesky: https://bsky.app/profile/wholehum.bsky.social
+- TikTok: https://www.tiktok.com/@wholehum
 - Pinterest: https://www.pinterest.com/wholehum/
 - SoundCloud: https://soundcloud.com/wholehum
 - Audiomack: https://audiomack.com/wholehum
