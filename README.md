@@ -70,6 +70,22 @@ Edit `sessions/432hz-deep-sleep.html` and `index.html`:
 7. Update the home page's **Latest session** block (headline, blurb, link and embed). If you want, also point the **Sessions** nav link in every page's header to the newest session.
 8. Commit and push. Pages redeploys automatically.
 
+## Links on everything (rule)
+
+**Every new page and every video description must include the full Whole Hum link set below.** The master list lives in `/workspace/wholehum/brand/links.md` (it also has the ready-to-paste block for video descriptions). If a link changes, update `links.md` first, then the footer on every page (including `404.html` and `sessions/_template.html`), the About page's "Find Whole Hum" list, the `sameAs` list in `index.html`, and `SOCIAL` in `tools/build_site.py`.
+
+- YouTube: https://www.youtube.com/@wholehum
+- Website: https://wholehum.github.io/
+- X: https://x.com/WholeHum
+- Bluesky: https://bsky.app/profile/wholehum.bsky.social
+- Pinterest: https://www.pinterest.com/wholehum/
+- SoundCloud: https://soundcloud.com/wholehum
+- Audiomack: https://audiomack.com/wholehum
+- Google Site: https://sites.google.com/view/wholehum
+- Email: wholehum@gmail.com
+
+New session pages copied from `sessions/_template.html` already carry the full footer.
+
 ## Writing rules (keep these)
 
 - No health or medical claims ("heals", "cures", "treats", "repairs DNA", and so on). Describe the sound and cite sources for facts.
@@ -78,5 +94,5 @@ Edit `sessions/432hz-deep-sleep.html` and `index.html`:
 
 ## Notes
 
-- `tools/build_site.py`, outside this folder, is the one-off script that first generated these pages. You don't need it to publish or edit; edit the HTML directly.
+- `tools/build_site.py`, outside this folder, is the one-off script that first generated these pages. You don't need it to publish or edit; edit the HTML directly. If you ever re-run it, re-add the Search Console verification meta tag to `index.html` and restore `404.html`, which it doesn't generate.
 - The canonical page for the home page is `https://wholehum.github.io/` (not `/index.html`).
