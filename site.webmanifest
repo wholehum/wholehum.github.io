@@ -1,0 +1,13 @@
+{
+  "name": "Whole Hum",
+  "short_name": "Whole Hum",
+  "description": "Sound for the whole you.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#1b1a46",
+  "theme_color": "#1b1a46",
+  "icons": [
+    {"src": "assets/img/icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "assets/img/icon-512.png", "sizes": "512x512", "type": "image/png"}
+  ]
+}
