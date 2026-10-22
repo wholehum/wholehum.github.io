@@ -125,5 +125,45 @@
     <p>&copy; 2026 Whole Hum &middot; <a href="about.html">About</a></p>
   </div>
 </footer>
+  <script>
+        let isRunning = false;
+        let intervalId = null;
+        const circle = document.getElementById('circle');
+        const statusText = document.getElementById('status-text');
+        const startBtn = document.getElementById('start-btn');
+
+        function toggleTimer() {
+            if (isRunning) {
+                clearInterval(intervalId);
+                circle.style.transform = 'scale(1)';
+                circle.style.opacity = '0.2';
+                statusText.innerText = 'Session Paused';
+                startBtn.innerText = 'Start';
+                isRunning = false;
+            } else {
+                isRunning = true;
+                startBtn.innerText = 'Pause';
+                runBreathingCycle();
+                intervalId = setInterval(runBreathingCycle, 8000);
+            }
+        }
+
+        function runBreathingCycle() {
+            // Inhale Phase (4 Seconds)
+            statusText.innerText = 'Inhale deeply...';
+            circle.style.transform = 'scale(2.2)';
+            circle.style.opacity = '0.6';
+            circle.style.transition = 'all 4s ease-in-out';
+            
+            // Hum / Exhale Phase (4 Seconds)
+            setTimeout(() => {
+                if (!isRunning) return;
+                statusText.innerText = 'Exhale & Hum... 🎧';
+                circle.style.transform = 'scale(1)';
+                circle.style.opacity = '0.2';
+                circle.style.transition = 'all 4s ease-in-out';
+            }, 4000);
+        }
+    </script>
 </body>
 </html>
