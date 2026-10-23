@@ -3,3 +3,8 @@
 *.pem
 *.key
 .secrets/
+
+# C2PA export artefacts: never commit unsigned or test outputs
+*.unsigned.mp4
+*.UNSIGNED.mp4
+c2pa-test/
