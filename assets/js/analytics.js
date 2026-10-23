@@ -41,10 +41,31 @@
       };
     }
   }
+  /* On opt-out, delete the Google Analytics cookies (_ga and _ga_<stream>) straight away, no reload.
+     Names come from document.cookie and must match a fixed pattern. Each is expired with path=/ as a
+     host-only cookie and, on the live host, with domain=wholehum.github.io and .wholehum.github.io
+     (the same cookie to the browser; both written to be safe). github.io itself is a public suffix,
+     so no cookie can exist there and none is written. */
+  var GA_COOKIE = /^_ga(_[A-Za-z0-9]+)?$/;
+  var LIVE_HOST = 'wholehum.github.io';
+  function clearGaCookies() {
+    var names = [];
+    String(document.cookie || '').split(';').forEach(function (part) {
+      var n = part.split('=')[0].trim();
+      if (GA_COOKIE.test(n) && names.indexOf(n) === -1) names.push(n);
+    });
+    var tail = '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; max-age=0; path=/; SameSite=Lax' + (window.isSecureContext ? '; Secure' : '');
+    var domains = [''];
+    if (location.hostname === LIVE_HOST) domains.push('; domain=' + LIVE_HOST, '; domain=.' + LIVE_HOST);
+    names.forEach(function (n) {
+      domains.forEach(function (d) { document.cookie = n + tail + d; });
+    });
+  }
   function setChoice(value) {
     try { localStorage.setItem(KEY, value); } catch (e) { /* storage blocked: choice lasts for this page only */ }
     window['ga-disable-' + GA_ID] = (value === 'denied');
     if (value === 'denied' && window.whGaLoaded) guardQueuedHits();
+    if (value === 'denied') clearGaCookies();
     gtagSafe('consent', 'update', { analytics_storage: value });
     // EEA/UK/CH (Consent Mode basic): gtag.js loads only now, on Accept. Decline keeps it unloaded.
     if (value === 'granted' && typeof window.whLoadGA === 'function') window.whLoadGA();
