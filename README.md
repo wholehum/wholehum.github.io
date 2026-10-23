@@ -115,7 +115,7 @@ New session pages copied from `sessions/_template.html` already carry the full f
 ## Writing rules (keep these)
 
 - No health or medical claims ("heals", "cures", "treats", "repairs DNA", and so on). Describe the sound and cite sources for facts.
-- Keep the not-medical-advice note and the footer disclosure: *Audio is AI-generated and made with code (algorithmic synthesis); visuals are AI-assisted. For relaxation and listening enjoyment only. Not medical advice or treatment. Visuals created with Grok.*
+- Keep the not-medical-advice note and the footer disclosure: *Audio is AI-generated and made with code (algorithmic synthesis); visuals are AI-assisted. For relaxation and listening enjoyment only. Not medical advice or treatment. Sound made with code · visuals created with Grok.*
 - Every image needs meaningful `alt` text (use `alt=""` only for purely decorative images).
 
 ## Notes
