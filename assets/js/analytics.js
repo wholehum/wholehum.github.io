@@ -81,6 +81,8 @@
   document.addEventListener('click', function (e) {
     var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
     if (!a) return;
+    // Links tagged data-link-platform are counted once by links.js (select_content); don't double-count.
+    if (window.whLinkEvents && a.hasAttribute('data-link-platform')) return;
     var host = (a.hostname || '').toLowerCase();
     if (/(^|\.)youtube\.com$/.test(host) || host === 'youtu.be') {
       gtagSafe('event', 'youtube_click', { link_url: a.href });

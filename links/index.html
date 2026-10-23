@@ -3,102 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- Google Analytics 4 with Consent Mode v2 (details: privacy.html). Ads features off. -->
-<script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-(function () {
-  var ADS_OFF = {ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied'};
-  function merge(a, b) { var o = {}, k; for (k in a) o[k] = a[k]; for (k in b) o[k] = b[k]; return o; }
-  // EEA (EU + Iceland, Liechtenstein, Norway), UK and Switzerland: analytics off until the visitor accepts.
-  gtag('consent', 'default', merge(ADS_OFF, {analytics_storage: 'denied', wait_for_update: 500, region: [
-    'AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL',
-    'PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH']}));
-  // Everywhere else: aggregate analytics on, advertising storage and signals off.
-  gtag('consent', 'default', merge(ADS_OFF, {analytics_storage: 'granted'}));
-  gtag('set', 'ads_data_redaction', true);
-  // Likely European visitor (by time zone): ask first, and keep analytics off until they answer.
-  var tz = ''; try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch (e) {}
-  window.whNeedsConsent = /^(Europe|Arctic)\//.test(tz) ||
-    /^(Atlantic\/(Reykjavik|Canary|Madeira|Azores|Faroe|Jan_Mayen)|Asia\/(Nicosia|Famagusta))$/.test(tz);
-  var choice = null; try { choice = localStorage.getItem('wh-analytics-consent'); } catch (e) {}
-  if (choice === 'granted' || choice === 'denied') {
-    gtag('consent', 'update', {analytics_storage: choice});
-  } else if (window.whNeedsConsent) {
-    gtag('consent', 'update', {analytics_storage: 'denied'});
-  }
-  // An explicit "no" (banner Decline or the privacy-page switch) stops Google Analytics entirely.
-  if (choice === 'denied') window['ga-disable-G-04TF991ZRR'] = true;
-})();
-gtag('js', new Date());
-gtag('config', 'G-04TF991ZRR', {
-  allow_google_signals: false,
-  allow_ad_personalization_signals: false,
-  cookie_expires: 34128000,
-  cookie_flags: 'SameSite=Lax;Secure'
-});
-</script>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-04TF991ZRR"></script>
-<!-- End Google Analytics -->
-<title>Whole Hum Links | YouTube, Socials &amp; Listening Platforms</title>
-<meta name="description" content="All the official Whole Hum links in one place: YouTube, the website, X, Bluesky, TikTok, Pinterest, SoundCloud, Audiomack, the Google Site and email.">
-<link rel="canonical" href="https://wholehum.github.io/links/">
+<title>Whole Hum</title>
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="https://wholehum.github.io/">
+<meta http-equiv="refresh" content="0; url=https://wholehum.github.io/">
+<script>location.replace('https://wholehum.github.io/');</script>
 <meta name="theme-color" content="#1b1a46">
-<meta property="og:site_name" content="Whole Hum">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Whole Hum Links | YouTube, Socials &amp; Listening Platforms">
-<meta property="og:description" content="All the official Whole Hum links in one place: YouTube, the website, X, Bluesky, TikTok, Pinterest, SoundCloud, Audiomack, the Google Site and email.">
-<meta property="og:url" content="https://wholehum.github.io/links/">
-<meta property="og:image" content="https://wholehum.github.io/assets/img/og-default.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Whole Hum: sound for the whole you">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@WholeHum">
-<meta name="twitter:title" content="Whole Hum Links | YouTube, Socials &amp; Listening Platforms">
-<meta name="twitter:description" content="All the official Whole Hum links in one place: YouTube, the website, X, Bluesky, TikTok, Pinterest, SoundCloud, Audiomack, the Google Site and email.">
-<meta name="twitter:image" content="https://wholehum.github.io/assets/img/og-default.jpg">
 <link rel="icon" href="../favicon.ico" sizes="48x48">
-<link rel="icon" type="image/png" sizes="32x32" href="../assets/img/icon-32.png">
-<link rel="apple-touch-icon" href="../assets/img/icon-180.png">
-<link rel="manifest" href="../site.webmanifest">
-<link rel="preload" href="../assets/fonts/poppins-regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/css/style.css">
+<style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#0b0a24;color:#fff4e1;font:1rem/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;text-align:center}a{color:#ffd9a8}</style>
 </head>
 <body>
-<a class="skip" href="#main">Skip to content</a>
-<main id="main" class="bio">
-  <header class="bio-head">
-    <picture><source srcset="../assets/img/wholehum-logo-400.webp" type="image/webp"><img class="bio-logo" src="../assets/img/wholehum-logo-400.jpg" width="400" height="400" alt="Whole Hum logo: a glowing figure seated in meditation against a dusk gradient from indigo to peach"></picture>
-    <h1>Whole Hum</h1>
-    <p class="bio-tagline">Sound for the whole you.</p>
-    <p class="bio-lede">Frequencies, tones and calming soundscapes for mind, body &amp; spirit, paired with slow, gentle visuals.</p>
-  </header>
-
-  <section class="bio-section" aria-labelledby="bio-latest">
-    <h2 id="bio-latest" class="bio-label">Latest session</h2>
-    <a class="bio-btn bio-feature" href="https://www.youtube.com/watch?v=yZ9LNX3weBQ&amp;utm_source=wholehum_site&amp;utm_medium=bio_link&amp;utm_campaign=links_page&amp;utm_content=youtube" rel="noopener" data-link-platform="youtube" data-link-position="featured"><span class="bio-name">432Hz Sleep Music | Soft Crystal Bowls &amp; Gentle Rain | 3 Hours</span><span class="bio-handle">Watch on YouTube</span></a>
-  </section>
-
-  <section class="bio-section" aria-labelledby="bio-find">
-    <h2 id="bio-find" class="bio-label">Find Whole Hum</h2>
-    <ul class="bio-links"><li><a class="bio-btn" href="https://www.youtube.com/@wholehum?utm_source=wholehum_site&amp;utm_medium=bio_link&amp;utm_campaign=links_page&amp;utm_content=youtube" rel="me noopener" data-link-platform="youtube" data-link-position="main"><span class="bio-name">YouTube</span><span class="bio-handle">@wholehum</span></a></li><li><a class="bio-btn" href="../" data-link-platform="website" data-link-position="main"><span class="bio-name">Website</span><span class="bio-handle">wholehum.github.io</span></a></li><li><a class="bio-btn" href="https://x.com/WholeHum?utm_source=wholehum_site&amp;utm_medium=bio_link&amp;utm_campaign=links_page&amp;utm_content=x" rel="me noopener" data-link-platform="x" data-link-position="main"><span class="bio-name">X</span><span class="bio-handle">@WholeHum</span></a></li><li><a class="bio-btn" href="https://bsky.app/profile/wholehum.bsky.social?utm_source=wholehum_site&amp;utm_medium=bio_link&amp;utm_campaign=links_page&amp;utm_content=bluesky" rel="me noopener" data-link-platform="bluesky" data-link-position="main"><span class="bio-name">Bluesky</span><span class="bio-handle">@wholehum.bsky.social</span></a></li><li><a class="bio-btn" href="https://www.tiktok.com/@wholehum?utm_source=wholehum_site&amp;utm_medium=bio_link&amp;utm_campaign=links_page&amp;utm_content=tiktok" rel="me noopener" data-link-platform="tiktok" data-link-position="main"><span class="bio-name">TikTok</span><span class="bio-handle">@wholehum</span></a></li><li><a class="bio-btn" href="https://www.pinterest.com/wholehum/?utm_source=wholehum_site&amp;utm_medium=bio_link&amp;utm_campaign=links_page&amp;utm_content=pinterest" rel="me noopener" data-link-platform="pinterest" data-link-position="main"><span class="bio-name">Pinterest</span><span class="bio-handle">@wholehum</span></a></li><li><a class="bio-btn" href="https://soundcloud.com/wholehum?utm_source=wholehum_site&amp;utm_medium=bio_link&amp;utm_campaign=links_page&amp;utm_content=soundcloud" rel="me noopener" data-link-platform="soundcloud" data-link-position="main"><span class="bio-name">SoundCloud</span><span class="bio-handle">@wholehum</span></a></li><li><a class="bio-btn" href="https://audiomack.com/wholehum?utm_source=wholehum_site&amp;utm_medium=bio_link&amp;utm_campaign=links_page&amp;utm_content=audiomack" rel="me noopener" data-link-platform="audiomack" data-link-position="main"><span class="bio-name">Audiomack</span><span class="bio-handle">@wholehum</span></a></li><li><a class="bio-btn" href="https://sites.google.com/view/wholehum?utm_source=wholehum_site&amp;utm_medium=bio_link&amp;utm_campaign=links_page&amp;utm_content=google_site" rel="me noopener" data-link-platform="google_site" data-link-position="main"><span class="bio-name">Google Site</span><span class="bio-handle">sites.google.com/view/wholehum</span></a></li><li><a class="bio-btn" href="mailto:wholehum@gmail.com" data-link-platform="email" data-link-position="main"><span class="bio-name">Email</span><span class="bio-handle">wholehum@gmail.com</span></a></li></ul>
-  </section>
-
-  <div class="bio-fine">
-    <p>AI-generated audio &middot; Made with code (algorithmic synthesis)</p>
-    <p>For relaxation and listening enjoyment only. Not medical advice or treatment.</p>
-  </div>
-</main>
-<footer class="site-footer">
-  <div class="wrap">
-    <nav aria-label="Whole Hum elsewhere"><ul><li><a href="https://www.youtube.com/@wholehum?utm_source=wholehum_site&amp;utm_medium=bio_link&amp;utm_campaign=links_page&amp;utm_content=youtube" rel="me noopener" data-link-platform="youtube" data-link-position="footer">YouTube</a></li><li><a href="../" data-link-platform="website" data-link-position="footer">Website</a></li><li><a href="https://x.com/WholeHum?utm_source=wholehum_site&amp;utm_medium=bio_link&amp;utm_campaign=links_page&amp;utm_content=x" rel="me noopener" data-link-platform="x" data-link-position="footer">X</a></li><li><a href="https://bsky.app/profile/wholehum.bsky.social?utm_source=wholehum_site&amp;utm_medium=bio_link&amp;utm_campaign=links_page&amp;utm_content=bluesky" rel="me noopener" data-link-platform="bluesky" data-link-position="footer">Bluesky</a></li><li><a href="https://www.tiktok.com/@wholehum?utm_source=wholehum_site&amp;utm_medium=bio_link&amp;utm_campaign=links_page&amp;utm_content=tiktok" rel="me noopener" data-link-platform="tiktok" data-link-position="footer">TikTok</a></li><li><a href="https://www.pinterest.com/wholehum/?utm_source=wholehum_site&amp;utm_medium=bio_link&amp;utm_campaign=links_page&amp;utm_content=pinterest" rel="me noopener" data-link-platform="pinterest" data-link-position="footer">Pinterest</a></li><li><a href="https://soundcloud.com/wholehum?utm_source=wholehum_site&amp;utm_medium=bio_link&amp;utm_campaign=links_page&amp;utm_content=soundcloud" rel="me noopener" data-link-platform="soundcloud" data-link-position="footer">SoundCloud</a></li><li><a href="https://audiomack.com/wholehum?utm_source=wholehum_site&amp;utm_medium=bio_link&amp;utm_campaign=links_page&amp;utm_content=audiomack" rel="me noopener" data-link-platform="audiomack" data-link-position="footer">Audiomack</a></li><li><a href="https://sites.google.com/view/wholehum?utm_source=wholehum_site&amp;utm_medium=bio_link&amp;utm_campaign=links_page&amp;utm_content=google_site" rel="me noopener" data-link-platform="google_site" data-link-position="footer">Google Site</a></li><li><a href="mailto:wholehum@gmail.com" data-link-platform="email" data-link-position="footer">wholehum@gmail.com</a></li></ul></nav>
-    <p>Audio is AI-generated and made with code (algorithmic synthesis); visuals are AI-assisted. For relaxation and listening enjoyment only. Not medical advice or treatment. Visuals created with Grok.</p>
-    <p>&copy; 2026 Whole Hum &middot; <a href="../about.html">About</a> &middot; <a href="./" aria-current="page">Links</a> &middot; <a href="../privacy.html">Privacy</a></p>
-  </div>
-</footer>
-<script src="../assets/js/links.js" defer></script>
-<script src="../assets/js/analytics.js" defer></script>
-<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "a6b800e443594c818296fdfd0c3c9e5a"}'></script><!-- End Cloudflare Web Analytics -->
+<!-- /links/ moved: every Whole Hum link now lives in the icon band on every page of the site. -->
+<p>All Whole Hum links now live on the home page:<br><a href="https://wholehum.github.io/">wholehum.github.io</a></p>
 </body>
 </html>

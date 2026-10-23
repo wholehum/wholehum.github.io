@@ -6,13 +6,13 @@ The static site for **https://wholehum.github.io/**. It's plain HTML and CSS, wi
 index.html                         Home: hero, intro, Latest session slot, breathing pacer, 5 uses
 about.html                         About, social links, contact, AI disclosure
 privacy.html                       Privacy: what analytics we use, retention, opt-out, contact
-links/index.html                   Bio link page (/links/): every official profile as big buttons, UTM-tagged
+links/index.html                   Redirect only: /links/ -> home page (noindex, canonical home, not in sitemap)
 sessions/432hz-deep-sleep.html     Session #1 (DRAFT: noindex until the video is live)
 sessions/_template.html            Copy this for every new session
 learn/what-is-432hz.html           Explainer
 learn/what-are-binaural-beats.html Explainer
 404.html  robots.txt  sitemap.xml  site.webmanifest  favicon.ico  .nojekyll
-assets/css/style.css   assets/js/analytics.js   assets/fonts/*.woff2   assets/img/*
+assets/css/style.css   assets/js/analytics.js   assets/js/links.js   assets/fonts/*.woff2   assets/img/*
 ```
 
 ## Preview locally
@@ -62,11 +62,11 @@ Two analytics tools run on **every page** (including `404.html` and `sessions/_t
 **`assets/js/analytics.js`** (loaded with `defer` just before the Cloudflare beacon; path `../assets/js/analytics.js` in `learn/` and `sessions/`, `/assets/js/analytics.js` in `404.html`):
 - shows the consent banner (Accept / Decline, keyboard accessible, site colours) only when `whNeedsConsent` is set and no choice is saved; saves the choice and calls `gtag('consent', 'update', …)`;
 - drives the **Turn off Google Analytics on this site** switch on `privacy.html` (`#ga-toggle`);
-- sends a `youtube_click` event (`link_url`) for clicks on links to youtube.com / youtu.be.
+- sends a `youtube_click` event (`link_url`) for clicks on links to youtube.com / youtu.be (except links with `data-link-platform` when `links.js` is loaded; those are counted by `links.js`).
 
-The breathing pacer script in `index.html` sends `breath_pacer_start` once per page view, on the first Start. On `links/index.html`, `assets/js/links.js` sends `select_content` (`content_type: 'bio_link'`, `content_id`, `link_platform`, `link_position`, `link_url`) for clicks on any link with a `data-link-platform` attribute. Outbound links there carry `utm_source=wholehum_site&utm_medium=bio_link&utm_campaign=links_page&utm_content=<platform>` (not the internal Website link or the mailto). GA4 enhanced measurement covers page views, scrolls and outbound clicks. To see `link_url` in reports, register it as an event-scoped custom dimension in GA4 (Admin → Custom definitions).
+The breathing pacer script in `index.html` sends `breath_pacer_start` once per page view, on the first Start. **`assets/js/links.js`** (on every page, before `analytics.js`) sends `select_content` (`content_type: 'bio_link'`, `content_id`, `link_platform`, `link_position`, `link_url`) for clicks on any link with a `data-link-platform` attribute: the social icon band under the header (`data-link-position="band"`) and the footer Google Site and email links (`"footer"`). It sets `window.whLinkEvents`, and `analytics.js` then skips those links, so a YouTube band click is one event, not two. Band links carry `utm_source=wholehum_site&utm_medium=bio_link&utm_campaign=social_band&utm_content=<platform>`; the footer Google Site link uses `utm_campaign=site_footer&utm_content=google_site` (no UTM on the mailto). The same script pins and shrinks the header + band after ~24px of scroll (`.is-compact`, IntersectionObserver sentinel, no layout shift). The old `/links/` bio page (campaign `links_page`) is now a redirect to the home page. GA4 enhanced measurement covers page views, scrolls and outbound clicks. To see `link_url` in reports, register it as an event-scoped custom dimension in GA4 (Admin → Custom definitions).
 
-**Rules:** every new page needs the GA4 head block, the `analytics.js` tag, the Cloudflare beacon and the footer **Privacy** link (copying `_template.html` gives you all four). If you add any new tracking, cookies, embeds or third-party services, update `privacy.html` (and its "Updated" date) in the same commit. Never turn on Google signals, Ads links or ad personalisation without updating the privacy page and the consent defaults.
+**Rules:** every new page needs the GA4 head block, the `links.js` and `analytics.js` tags, the Cloudflare beacon and the footer **Privacy** link (copying `_template.html` gives you all four). If you add any new tracking, cookies, embeds or third-party services, update `privacy.html` (and its "Updated" date) in the same commit. Never turn on Google signals, Ads links or ad personalisation without updating the privacy page and the consent defaults.
 
 ## When video #1 goes live (session page checklist)
 
@@ -97,7 +97,7 @@ Edit `sessions/432hz-deep-sleep.html` and `index.html`:
 
 ## Links on everything (rule)
 
-**Every new page and every video description must include the full Whole Hum link set below.** The master list lives in `/workspace/wholehum/brand/links.md` (it also has the ready-to-paste block for video descriptions). If a link changes, update `links.md` first, then the footer on every page (including `404.html`, `privacy.html` and `sessions/_template.html`), the About page's "Find Whole Hum" list, the buttons and footer in `links/index.html` (keep the UTM tags), the `sameAs` list in `index.html`, and `SOCIAL` in `tools/build_site.py`.
+**Every new page and every video description must include the full Whole Hum link set below.** The master list lives in `/workspace/wholehum/brand/links.md` (it also has the ready-to-paste block for video descriptions). If a link changes, update `links.md` first, then the footer on every page (including `404.html`, `privacy.html` and `sessions/_template.html`), the About page's "Find Whole Hum" list, the social icon band in every page's header (keep the UTM tags and `data-link-*` attributes), the `sameAs` list in `index.html`, and `SOCIAL` in `tools/build_site.py`.
 
 - YouTube: https://www.youtube.com/@wholehum
 - Website: https://wholehum.github.io/

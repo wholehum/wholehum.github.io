@@ -18,7 +18,7 @@
   --read:44rem;
 }
 *,*::before,*::after{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:calc(var(--pin-h,6.5rem) + .75rem)}
 body{margin:0;font-family:"Poppins",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-weight:400;line-height:1.7;color:var(--cream);
   background:var(--indigo) linear-gradient(180deg,var(--night) 0%,var(--indigo) 40%,#2a2158 100%) fixed;min-height:100vh;display:flex;flex-direction:column}
 main{flex:1}
@@ -138,23 +138,40 @@ html.has-consent body{padding-bottom:9rem}
 .switch input{width:1.3rem;height:1.3rem;margin:.2rem 0 0;flex:none;accent-color:var(--peach);cursor:pointer}
 .switch-status{color:var(--muted);font-size:.92rem;margin:.5rem 0 0}
 
-/* Bio link page (/links/) */
-.bio{width:min(100% - 2.5rem,32rem);margin-inline:auto;padding:clamp(2rem,7vw,3.5rem) 0 2.5rem;text-align:center}
-.bio-head{margin-bottom:1.6rem}
-.bio-logo{width:112px;height:112px;border-radius:50%;margin:0 auto 1rem;box-shadow:0 0 32px rgba(242,164,119,.28)}
-.bio h1{font-size:clamp(1.6rem,6vw,2.1rem);font-weight:500;letter-spacing:.22em;text-transform:uppercase;margin:0 0 .3rem}
-.bio-tagline{color:var(--peach);font-size:1.05rem;margin:0 0 .5rem}
-.bio-lede{color:var(--muted);font-size:.95rem;margin:0 auto;max-width:26rem}
-.bio-section{padding:0;margin:0 0 1.6rem}
-.bio-label{font-size:.8rem;font-weight:500;letter-spacing:.32em;text-transform:uppercase;color:var(--muted);margin:0 0 .7rem}
-.bio-links{list-style:none;margin:0;padding:0;display:grid;gap:.7rem}
-.bio-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.1rem;min-height:3.6rem;padding:.75rem 1.2rem;border-radius:999px;background:rgba(45,42,99,.6);border:1px solid rgba(255,244,225,.14);color:var(--cream);text-decoration:none;line-height:1.35;transition:transform .2s ease,border-color .2s ease,background .2s ease}
-.bio-btn:hover{color:var(--cream);border-color:var(--peach);background:rgba(45,42,99,.85);transform:translateY(-1px)}
-.bio-name{font-weight:500;font-size:1.02rem}
-.bio-handle{color:var(--muted);font-size:.82rem;overflow-wrap:anywhere}
-.bio-feature{border-radius:var(--radius);background:var(--cream);border-color:var(--cream);color:var(--night)}
-.bio-feature .bio-handle{color:var(--violet)}
-.bio-feature:hover{background:var(--gold);border-color:var(--gold);color:var(--night)}
-.bio-fine{font-size:.8rem;color:var(--muted);margin-top:2rem}
-.bio-fine p{margin:0 0 .3rem}
-@media (prefers-reduced-motion:reduce){.bio-btn:hover{transform:none}}
+/* Pinned header + social band (band sits inside .site-header, so the two pin and shrink as one block).
+   assets/js/links.js adds .is-compact after ~24px of scroll and pads the header's margin-bottom by the
+   height it loses, so nothing below moves (no layout shift). Glyphs: Simple Icons (CC0). */
+.social-band{--glyph:28px;--tap:48px}
+.social-band .social-icons{width:min(100% - 2.5rem,var(--max));margin-inline:auto}
+.social-icons ul{list-style:none;margin:0;padding:.35rem 0 .45rem;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:0 1rem}
+.social-icons a{display:inline-flex;align-items:center;justify-content:center;width:var(--tap);height:var(--tap);border-radius:50%;color:var(--cream);text-decoration:none;opacity:.9;transition:color .2s ease,opacity .2s ease,transform .2s ease}
+.social-icons svg{width:var(--glyph);height:var(--glyph);display:block;transition:width .22s ease,height .22s ease}
+.social-icons .si-wide svg{transform:scale(1.15)} /* optical balance: these two glyphs are wide and short */
+.social-icons a:hover{color:var(--gold);opacity:1;transform:translateY(-1px)}
+.social-icons a:focus-visible{outline:2px solid var(--gold);outline-offset:1px;border-radius:50%;opacity:1}
+.pin-sentinel{position:absolute;top:24px;left:0;width:1px;height:1px;pointer-events:none;visibility:hidden}
+.site-header.is-compact .wrap{padding:.5rem 0 .15rem;gap:.4rem 1rem}
+.site-header.is-compact .brand img{width:28px;height:28px}
+.site-header.is-compact .social-band{--glyph:21px;--tap:44px}
+.site-header.is-compact .social-icons ul{padding:0 0 .1rem}
+.site-header.pin-anim .wrap,.site-header.pin-anim .social-band{animation:pin-in .24s ease}
+@keyframes pin-in{from{opacity:.55;transform:translateY(-3px)}to{opacity:1;transform:none}}
+@media (max-width:30rem){
+  .social-band{--tap:44px}
+  .social-icons ul{gap:0 .1rem;padding:.25rem 0 .35rem}
+  /* Compact phone layout: logo + one slim, swipeable nav row, then the icon row. */
+  .site-header.is-compact .wrap{flex-wrap:nowrap;padding:.15rem 0;gap:.75rem}
+  .site-header.is-compact .brand{font-size:0;gap:0;flex:none}
+  .site-header.is-compact .nav{flex:1;min-width:0;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .site-header.is-compact .nav::-webkit-scrollbar{display:none}
+  .site-header.is-compact .nav.has-more{-webkit-mask-image:linear-gradient(to right,#000 82%,transparent);mask-image:linear-gradient(to right,#000 82%,transparent)}
+  .site-header.is-compact .nav ul{flex-wrap:nowrap;gap:0 1.05rem;padding-right:1.25rem}
+  .site-header.is-compact .nav li{flex:none}
+  .site-header.is-compact .nav a{display:inline-block;font-size:.9rem;line-height:1.5;padding:.55rem 0 .45rem;white-space:nowrap}
+  .site-header.is-compact .social-icons ul{padding:0}
+}
+@media (prefers-reduced-motion:reduce){
+  .social-icons a,.social-icons svg{transition:none}
+  .social-icons a:hover{transform:none}
+  .site-header.pin-anim .wrap,.site-header.pin-anim .social-band{animation:none}
+}
