@@ -134,6 +134,9 @@ section{padding:clamp(2.5rem,6vw,4.5rem) 0}
 .consent-btn:hover{background:var(--gold);border-color:var(--gold);color:var(--night)}
 html.has-consent body{padding-bottom:9rem}
 @media (min-width:48rem){html.has-consent body{padding-bottom:5rem}}
+/* Keep keyboard-focused items clear of the fixed banner (WCAG 2.4.11). --consent-h is the banner's measured height. */
+html.has-consent{scroll-padding-bottom:calc(var(--consent-h,9rem) + .75rem)}
+main[tabindex="-1"]:focus{outline:none}
 .switch{display:flex;align-items:flex-start;gap:.75rem;cursor:pointer;font-weight:500}
 .switch input{width:1.3rem;height:1.3rem;margin:.2rem 0 0;flex:none;accent-color:var(--peach);cursor:pointer}
 .switch-status{color:var(--muted);font-size:.92rem;margin:.5rem 0 0}

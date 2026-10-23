@@ -22,7 +22,39 @@
   }
   window.whAnalyticsChoice = setChoice;
 
-  /* ---------- Consent banner (shown only when the head script flagged a likely European visitor) ---------- */
+  /* ---------- Consent banner (shown only when the head script flagged a likely European visitor) ----------
+     The markup below is a fixed string: no URL, choice or visitor data is ever put into it. The Privacy
+     link's href is set afterwards as a property. The banner goes right after the skip link, so it is
+     early in the Tab order, and after Accept/Decline keyboard focus moves to <main> (no event is sent). */
+  var BANNER_HTML =
+    '<div class="consent-inner">' +
+      '<p class="consent-text"><strong id="wh-consent-title">Analytics cookies?</strong> ' +
+      'We&rsquo;d like to use Google Analytics cookies to see, in aggregate, which pages are useful. ' +
+      'No ads, no selling data. <a class="consent-privacy" href="#">Privacy</a></p>' +
+      '<div class="consent-actions">' +
+        '<button type="button" class="consent-btn" data-choice="granted">Accept</button>' +
+        '<button type="button" class="consent-btn" data-choice="denied">Decline</button>' +
+      '</div>' +
+    '</div>';
+
+  function setBannerHeight() {
+    var box = document.getElementById('wh-consent');
+    if (box) document.documentElement.style.setProperty('--consent-h', box.offsetHeight + 'px');
+  }
+  function removeBanner(box) {
+    if (box && box.parentNode) box.parentNode.removeChild(box);
+    var root = document.documentElement;
+    root.classList.remove('has-consent');
+    root.style.removeProperty('--consent-h');
+    window.removeEventListener('resize', setBannerHeight);
+  }
+  function focusMain() {
+    var main = document.getElementById('main');
+    if (!main) return;
+    if (!main.hasAttribute('tabindex')) main.setAttribute('tabindex', '-1');
+    try { main.focus({ preventScroll: true }); } catch (e) { main.focus(); }
+  }
+
   function showBanner() {
     if (document.getElementById('wh-consent')) return;
     var root = document.documentElement;
@@ -31,26 +63,24 @@
     box.className = 'consent';
     box.setAttribute('role', 'region');
     box.setAttribute('aria-labelledby', 'wh-consent-title');
-    box.innerHTML =
-      '<div class="consent-inner">' +
-        '<p class="consent-text"><strong id="wh-consent-title">Analytics cookies?</strong> ' +
-        'We&rsquo;d like to use Google Analytics cookies to see, in aggregate, which pages are useful. ' +
-        'No ads, no selling data. <a href="' + privacyUrl + '">Privacy</a></p>' +
-        '<div class="consent-actions">' +
-          '<button type="button" class="consent-btn" data-choice="granted">Accept</button>' +
-          '<button type="button" class="consent-btn" data-choice="denied">Decline</button>' +
-        '</div>' +
-      '</div>';
+    box.innerHTML = BANNER_HTML;
+    var privacyLink = box.querySelector('a.consent-privacy');
+    if (privacyLink) privacyLink.href = privacyUrl;
     box.addEventListener('click', function (e) {
       var b = e.target.closest ? e.target.closest('button[data-choice]') : null;
       if (!b) return;
-      setChoice(b.getAttribute('data-choice'));
-      box.parentNode.removeChild(box);
-      root.classList.remove('has-consent');
+      var choice = b.getAttribute('data-choice') === 'granted' ? 'granted' : 'denied';
+      setChoice(choice);
+      removeBanner(box);
       syncToggle();
+      focusMain();
     });
-    document.body.appendChild(box);
+    var skip = document.querySelector('body > a.skip');
+    if (skip) skip.parentNode.insertBefore(box, skip.nextSibling);
+    else document.body.insertBefore(box, document.body.firstChild);
     root.classList.add('has-consent');
+    setBannerHeight();
+    window.addEventListener('resize', setBannerHeight);
   }
 
   /* ---------- Privacy page toggle ---------- */
@@ -71,7 +101,7 @@
     t.addEventListener('change', function () {
       setChoice(t.checked ? 'granted' : 'denied');
       var banner = document.getElementById('wh-consent');
-      if (banner) { banner.parentNode.removeChild(banner); document.documentElement.classList.remove('has-consent'); }
+      if (banner) removeBanner(banner);
       syncToggle();
     });
     syncToggle();
