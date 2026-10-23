@@ -1,16 +1,17 @@
 # Whole Hum website
 
-The static site for **https://wholehum.github.io/**. It's plain HTML and CSS, with no build step, no JavaScript framework and no tracking. The only script is a small inline one at the bottom of `index.html` that runs the Somatic Reset Space breathing pacer; the rest of the site works without JavaScript. Fonts (Poppins, under the SIL Open Font License; see `assets/fonts/OFL.txt`) are self-hosted, so the site never contacts Google Fonts.
+The static site for **https://wholehum.github.io/**. It's plain HTML and CSS, with no build step and no JavaScript framework. Scripts: the Somatic Reset Space breathing pacer (inline at the bottom of `index.html`), the analytics tags described under **Analytics and privacy** below, and `assets/js/analytics.js` (consent banner, privacy-page switch, custom events). The site's content works without JavaScript. Fonts (Poppins, under the SIL Open Font License; see `assets/fonts/OFL.txt`) are self-hosted, so the site never contacts Google Fonts.
 
 ```
 index.html                         Home: hero, intro, Latest session slot, breathing pacer, 5 uses
 about.html                         About, social links, contact, AI disclosure
+privacy.html                       Privacy: what analytics we use, retention, opt-out, contact
 sessions/432hz-deep-sleep.html     Session #1 (DRAFT: noindex until the video is live)
 sessions/_template.html            Copy this for every new session
 learn/what-is-432hz.html           Explainer
 learn/what-are-binaural-beats.html Explainer
 404.html  robots.txt  sitemap.xml  site.webmanifest  favicon.ico  .nojekyll
-assets/css/style.css   assets/fonts/*.woff2   assets/img/*
+assets/css/style.css   assets/js/analytics.js   assets/fonts/*.woff2   assets/img/*
 ```
 
 ## Preview locally
@@ -43,6 +44,29 @@ cd site && python3 -m http.server 8000
 3. Paste it into the `<head>` of `index.html` (right after `<meta name="viewport">`), commit, wait for Pages to redeploy, then click **Verify**.
 4. Submit `https://wholehum.github.io/sitemap.xml` under **Sitemaps**.
 
+## Analytics and privacy
+
+Two analytics tools run on **every page** (including `404.html` and `sessions/_template.html`, so pages copied from the template get them automatically):
+
+1. **Cloudflare Web Analytics** (cookieless). The beacon `<script>` sits just before `</body>`.
+2. **Google Analytics 4**, Measurement ID `G-04TF991ZRR` (property 560375939, under wholehum@gmail.com). Property settings: Google signals off, data retention 14 months, no Google Ads links. Keep it that way, or update `privacy.html` first.
+
+**The GA4 block in `<head>`** (right after `<meta name="viewport">`, between `<!-- Google Analytics 4 ... -->` and `<!-- End Google Analytics -->`) must be identical on every page. In order, it:
+- sets Consent Mode v2 defaults: `ad_storage`, `ad_user_data` and `ad_personalization` **denied** everywhere; `analytics_storage` **granted** by default, but **denied** (with `wait_for_update: 500`) in the EEA, UK and Switzerland via the `region` list;
+- sets `ads_data_redaction`;
+- if the visitor's time zone is European (`Europe/*`, Iceland, Canary/Madeira/Azores/Faroe, Cyprus), sets `window.whNeedsConsent` and keeps analytics denied until they answer the banner (time zone is the only reliable client-side hint that doesn't need a third-party lookup; Google applies the region defaults itself by IP);
+- applies a saved choice from `localStorage['wh-analytics-consent']` (`granted` / `denied`). An explicit `denied` also sets `window['ga-disable-G-04TF991ZRR'] = true`, so Google Analytics sends nothing at all;
+- runs `gtag('config', 'G-04TF991ZRR', {allow_google_signals: false, allow_ad_personalization_signals: false, cookie_expires: 34128000 /* 13 months */, cookie_flags: 'SameSite=Lax;Secure'})`, then loads `gtag.js` async.
+
+**`assets/js/analytics.js`** (loaded with `defer` just before the Cloudflare beacon; path `../assets/js/analytics.js` in `learn/` and `sessions/`, `/assets/js/analytics.js` in `404.html`):
+- shows the consent banner (Accept / Decline, keyboard accessible, site colours) only when `whNeedsConsent` is set and no choice is saved; saves the choice and calls `gtag('consent', 'update', …)`;
+- drives the **Turn off Google Analytics on this site** switch on `privacy.html` (`#ga-toggle`);
+- sends a `youtube_click` event (`link_url`) for clicks on links to youtube.com / youtu.be.
+
+The breathing pacer script in `index.html` sends `breath_pacer_start` once per page view, on the first Start. GA4 enhanced measurement covers page views, scrolls and outbound clicks. To see `link_url` in reports, register it as an event-scoped custom dimension in GA4 (Admin → Custom definitions).
+
+**Rules:** every new page needs the GA4 head block, the `analytics.js` tag, the Cloudflare beacon and the footer **Privacy** link (copying `_template.html` gives you all four). If you add any new tracking, cookies, embeds or third-party services, update `privacy.html` (and its "Updated" date) in the same commit. Never turn on Google signals, Ads links or ad personalisation without updating the privacy page and the consent defaults.
+
 ## When video #1 goes live (session page checklist)
 
 Edit `sessions/432hz-deep-sleep.html` and `index.html`:
@@ -72,7 +96,7 @@ Edit `sessions/432hz-deep-sleep.html` and `index.html`:
 
 ## Links on everything (rule)
 
-**Every new page and every video description must include the full Whole Hum link set below.** The master list lives in `/workspace/wholehum/brand/links.md` (it also has the ready-to-paste block for video descriptions). If a link changes, update `links.md` first, then the footer on every page (including `404.html` and `sessions/_template.html`), the About page's "Find Whole Hum" list, the `sameAs` list in `index.html`, and `SOCIAL` in `tools/build_site.py`.
+**Every new page and every video description must include the full Whole Hum link set below.** The master list lives in `/workspace/wholehum/brand/links.md` (it also has the ready-to-paste block for video descriptions). If a link changes, update `links.md` first, then the footer on every page (including `404.html`, `privacy.html` and `sessions/_template.html`), the About page's "Find Whole Hum" list, the `sameAs` list in `index.html`, and `SOCIAL` in `tools/build_site.py`.
 
 - YouTube: https://www.youtube.com/@wholehum
 - Website: https://wholehum.github.io/

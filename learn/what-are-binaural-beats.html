@@ -3,6 +3,43 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Google Analytics 4 with Consent Mode v2 (details: privacy.html). Ads features off. -->
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+(function () {
+  var ADS_OFF = {ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied'};
+  function merge(a, b) { var o = {}, k; for (k in a) o[k] = a[k]; for (k in b) o[k] = b[k]; return o; }
+  // EEA (EU + Iceland, Liechtenstein, Norway), UK and Switzerland: analytics off until the visitor accepts.
+  gtag('consent', 'default', merge(ADS_OFF, {analytics_storage: 'denied', wait_for_update: 500, region: [
+    'AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL',
+    'PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH']}));
+  // Everywhere else: aggregate analytics on, advertising storage and signals off.
+  gtag('consent', 'default', merge(ADS_OFF, {analytics_storage: 'granted'}));
+  gtag('set', 'ads_data_redaction', true);
+  // Likely European visitor (by time zone): ask first, and keep analytics off until they answer.
+  var tz = ''; try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch (e) {}
+  window.whNeedsConsent = /^(Europe|Arctic)\//.test(tz) ||
+    /^(Atlantic\/(Reykjavik|Canary|Madeira|Azores|Faroe|Jan_Mayen)|Asia\/(Nicosia|Famagusta))$/.test(tz);
+  var choice = null; try { choice = localStorage.getItem('wh-analytics-consent'); } catch (e) {}
+  if (choice === 'granted' || choice === 'denied') {
+    gtag('consent', 'update', {analytics_storage: choice});
+  } else if (window.whNeedsConsent) {
+    gtag('consent', 'update', {analytics_storage: 'denied'});
+  }
+  // An explicit "no" (banner Decline or the privacy-page switch) stops Google Analytics entirely.
+  if (choice === 'denied') window['ga-disable-G-04TF991ZRR'] = true;
+})();
+gtag('js', new Date());
+gtag('config', 'G-04TF991ZRR', {
+  allow_google_signals: false,
+  allow_ad_personalization_signals: false,
+  cookie_expires: 34128000,
+  cookie_flags: 'SameSite=Lax;Secure'
+});
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-04TF991ZRR"></script>
+<!-- End Google Analytics -->
 <title>What Are Binaural Beats? How They Work and What Research Says | Whole Hum</title>
 <meta name="description" content="How binaural beats work, why they need headphones, how they relate to EEG brainwave bands like delta and theta, and a plain summary of the research.">
 <link rel="canonical" href="https://wholehum.github.io/learn/what-are-binaural-beats.html">
@@ -127,9 +164,10 @@
   <div class="wrap">
     <nav aria-label="Whole Hum elsewhere"><ul><li><a href="https://www.youtube.com/@wholehum" rel="me noopener">YouTube</a></li><li><a href="https://wholehum.github.io/" rel="me noopener">Website</a></li><li><a href="https://x.com/WholeHum" rel="me noopener">X</a></li><li><a href="https://bsky.app/profile/wholehum.bsky.social" rel="me noopener">Bluesky</a></li><li><a href="https://www.tiktok.com/@wholehum" rel="me noopener">TikTok</a></li><li><a href="https://www.pinterest.com/wholehum/" rel="me noopener">Pinterest</a></li><li><a href="https://soundcloud.com/wholehum" rel="me noopener">SoundCloud</a></li><li><a href="https://audiomack.com/wholehum" rel="me noopener">Audiomack</a></li><li><a href="https://sites.google.com/view/wholehum" rel="me noopener">Google Site</a></li><li><a href="mailto:wholehum@gmail.com">wholehum@gmail.com</a></li></ul></nav>
     <p>Sound and visuals are made with original and AI-assisted tools. Whole Hum is for relaxation and wellbeing and isn’t medical advice.</p>
-    <p>&copy; 2026 Whole Hum &middot; <a href="../about.html">About</a></p>
+    <p>&copy; 2026 Whole Hum &middot; <a href="../about.html">About</a> &middot; <a href="../privacy.html">Privacy</a></p>
   </div>
 </footer>
+<script src="../assets/js/analytics.js" defer></script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "a6b800e443594c818296fdfd0c3c9e5a"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>

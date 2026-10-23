@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Google Analytics 4 with Consent Mode v2 (details: privacy.html). Ads features off. -->
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+(function () {
+  var ADS_OFF = {ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied'};
+  function merge(a, b) { var o = {}, k; for (k in a) o[k] = a[k]; for (k in b) o[k] = b[k]; return o; }
+  // EEA (EU + Iceland, Liechtenstein, Norway), UK and Switzerland: analytics off until the visitor accepts.
+  gtag('consent', 'default', merge(ADS_OFF, {analytics_storage: 'denied', wait_for_update: 500, region: [
+    'AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE','IT','LV','LT','LU','MT','NL',
+    'PL','PT','RO','SK','SI','ES','SE','IS','LI','NO','GB','CH']}));
+  // Everywhere else: aggregate analytics on, advertising storage and signals off.
+  gtag('consent', 'default', merge(ADS_OFF, {analytics_storage: 'granted'}));
+  gtag('set', 'ads_data_redaction', true);
+  // Likely European visitor (by time zone): ask first, and keep analytics off until they answer.
+  var tz = ''; try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch (e) {}
+  window.whNeedsConsent = /^(Europe|Arctic)\//.test(tz) ||
+    /^(Atlantic\/(Reykjavik|Canary|Madeira|Azores|Faroe|Jan_Mayen)|Asia\/(Nicosia|Famagusta))$/.test(tz);
+  var choice = null; try { choice = localStorage.getItem('wh-analytics-consent'); } catch (e) {}
+  if (choice === 'granted' || choice === 'denied') {
+    gtag('consent', 'update', {analytics_storage: choice});
+  } else if (window.whNeedsConsent) {
+    gtag('consent', 'update', {analytics_storage: 'denied'});
+  }
+  // An explicit "no" (banner Decline or the privacy-page switch) stops Google Analytics entirely.
+  if (choice === 'denied') window['ga-disable-G-04TF991ZRR'] = true;
+})();
+gtag('js', new Date());
+gtag('config', 'G-04TF991ZRR', {
+  allow_google_signals: false,
+  allow_ad_personalization_signals: false,
+  cookie_expires: 34128000,
+  cookie_flags: 'SameSite=Lax;Secure'
+});
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-04TF991ZRR"></script>
+<!-- End Google Analytics -->
+<title>Privacy | Whole Hum</title>
+<meta name="description" content="How the Whole Hum website uses Cloudflare Web Analytics and Google Analytics, what is collected, how long it is kept, and how to turn analytics off.">
+<link rel="canonical" href="https://wholehum.github.io/privacy.html">
+<meta name="theme-color" content="#1b1a46">
+<meta property="og:site_name" content="Whole Hum">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Privacy | Whole Hum">
+<meta property="og:description" content="How the Whole Hum website uses Cloudflare Web Analytics and Google Analytics, what is collected, how long it is kept, and how to turn analytics off.">
+<meta property="og:url" content="https://wholehum.github.io/privacy.html">
+<meta property="og:image" content="https://wholehum.github.io/assets/img/og-default.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Whole Hum: sound for the whole you">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@WholeHum">
+<meta name="twitter:title" content="Privacy | Whole Hum">
+<meta name="twitter:description" content="How the Whole Hum website uses Cloudflare Web Analytics and Google Analytics, what is collected, how long it is kept, and how to turn analytics off.">
+<meta name="twitter:image" content="https://wholehum.github.io/assets/img/og-default.jpg">
+<link rel="icon" href="favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/icon-32.png">
+<link rel="apple-touch-icon" href="assets/img/icon-180.png">
+<link rel="manifest" href="site.webmanifest">
+<link rel="preload" href="assets/fonts/poppins-regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html"><img src="assets/img/icon-180.png" width="36" height="36" alt="">Whole Hum</a>
+    <nav class="nav" aria-label="Main"><ul><li><a href="index.html">Home</a></li><li><a href="sessions/432hz-deep-sleep.html">Sessions</a></li><li><a href="learn/what-is-432hz.html">What is 432Hz?</a></li><li><a href="learn/what-are-binaural-beats.html">Binaural beats</a></li><li><a href="about.html">About</a></li></ul></nav>
+  </div>
+</header>
+<main id="main">
+<article class="article read">
+  <header>
+    <h1>Privacy</h1>
+    <p class="meta">How this site measures visits &middot; Updated October 22, 2026</p>
+  </header>
+
+  <p>We want to know which pages are useful so we can make better ones. We do that with two analytics tools, both set up to collect as little as possible. We don&rsquo;t sell data, we don&rsquo;t run ads on this site, and we never see your name or email unless you write to us.</p>
+
+  <h2>What we use</h2>
+  <h3>Cloudflare Web Analytics (no cookies)</h3>
+  <p>Cloudflare Web Analytics counts page views and shows us, in aggregate, which pages were visited, where visits came from (for example a search engine or YouTube), the type of device and browser, the country, and how fast pages loaded. It doesn&rsquo;t use cookies or local storage and doesn&rsquo;t track you across other sites. See <a href="https://www.cloudflare.com/web-analytics/">Cloudflare Web Analytics</a> and <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare&rsquo;s privacy policy</a>.</p>
+
+  <h3>Google Analytics 4 (uses cookies)</h3>
+  <p>Google Analytics gives us aggregate reports on how the site is used: pages viewed, time on page, scrolling, clicks on links (including clicks through to our YouTube channel), use of the breathing pacer, approximate country and city, and device type. To tell a new visit from a returning one, it sets first-party cookies named <code>_ga</code> and <code>_ga_04TF991ZRR</code> on this site. We set these cookies to expire after 13 months.</p>
+  <p>We&rsquo;ve set it up for privacy:</p>
+  <ul>
+    <li><strong>Advertising features are off.</strong> Google signals, ad personalisation and links to Google Ads are all turned off, and no advertising cookies are set.</li>
+    <li><strong>We only see totals.</strong> We look at reports such as &ldquo;how many people read this page&rdquo;. We can&rsquo;t see who you are.</li>
+    <li><strong>Data is kept for 14 months.</strong> Google Analytics deletes the event-level data tied to these cookies after 14 months. Totals in standard reports (for example, monthly page views) remain.</li>
+    <li><strong>Visitors in the EEA, UK and Switzerland are asked first.</strong> In those regions, Google Analytics doesn&rsquo;t set cookies unless you choose Accept on the banner.</li>
+  </ul>
+  <p>Google processes this data under its own terms. See <a href="https://policies.google.com/technologies/partner-sites">how Google uses information from sites that use its services</a> and <a href="https://policies.google.com/privacy">Google&rsquo;s privacy policy</a>.</p>
+
+  <h2>Your choices</h2>
+  <div class="note" role="group" aria-labelledby="ga-toggle-title">
+    <p id="ga-toggle-title"><strong>Turn off Google Analytics on this site</strong></p>
+    <label class="switch"><input type="checkbox" id="ga-toggle" checked aria-describedby="ga-toggle-status"> Allow Google Analytics (untick to turn it off)</label>
+    <p class="switch-status" id="ga-toggle-status" aria-live="polite">Google Analytics is on. Untick the box to turn it off.</p>
+  </div>
+  <ul>
+    <li>This switch saves your choice in your browser&rsquo;s local storage (<code>wh-analytics-consent</code>), so it applies to this browser on this site until you clear site data. It needs JavaScript.</li>
+    <li>To stop Google Analytics on every website, install Google&rsquo;s <a href="https://tools.google.com/dlpage/gaoptout">Google Analytics Opt-out Browser Add-on</a>.</li>
+    <li>Blocking or deleting cookies in your browser settings also works. The site works the same either way.</li>
+  </ul>
+
+  <h2>Other things to know</h2>
+  <ul>
+    <li><strong>Hosting.</strong> This site is hosted on GitHub Pages. GitHub may log visitors&rsquo; IP addresses for security. See the <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub General Privacy Statement</a>.</li>
+    <li><strong>Embedded videos.</strong> Videos are embedded with YouTube&rsquo;s privacy-enhanced mode (<code>youtube-nocookie.com</code>). If you press play, YouTube&rsquo;s own privacy policy applies.</li>
+    <li><strong>Fonts</strong> are hosted on this site, so loading a page doesn&rsquo;t contact a font service.</li>
+    <li><strong>Email.</strong> If you email us, we use your message only to reply.</li>
+  </ul>
+
+  <h2>Contact</h2>
+  <p>Questions about privacy or this page: <a href="mailto:wholehum@gmail.com">wholehum@gmail.com</a></p>
+</article>
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <nav aria-label="Whole Hum elsewhere"><ul><li><a href="https://www.youtube.com/@wholehum" rel="me noopener">YouTube</a></li><li><a href="https://wholehum.github.io/" rel="me noopener">Website</a></li><li><a href="https://x.com/WholeHum" rel="me noopener">X</a></li><li><a href="https://bsky.app/profile/wholehum.bsky.social" rel="me noopener">Bluesky</a></li><li><a href="https://www.tiktok.com/@wholehum" rel="me noopener">TikTok</a></li><li><a href="https://www.pinterest.com/wholehum/" rel="me noopener">Pinterest</a></li><li><a href="https://soundcloud.com/wholehum" rel="me noopener">SoundCloud</a></li><li><a href="https://audiomack.com/wholehum" rel="me noopener">Audiomack</a></li><li><a href="https://sites.google.com/view/wholehum" rel="me noopener">Google Site</a></li><li><a href="mailto:wholehum@gmail.com">wholehum@gmail.com</a></li></ul></nav>
+    <p>Sound and visuals are made with original and AI-assisted tools. Whole Hum is for relaxation and wellbeing and isn’t medical advice.</p>
+    <p>&copy; 2026 Whole Hum &middot; <a href="about.html">About</a> &middot; <a href="privacy.html">Privacy</a></p>
+  </div>
+</footer>
+<script src="assets/js/analytics.js" defer></script>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "a6b800e443594c818296fdfd0c3c9e5a"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>

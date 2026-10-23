@@ -88,10 +88,10 @@ section{padding:clamp(2.5rem,6vw,4.5rem) 0}
 .sources li{margin-bottom:.5em;overflow-wrap:anywhere}
 .breadcrumb{font-size:.9rem;color:var(--muted);margin-bottom:1rem}
 .breadcrumb a{color:var(--muted)}
-.links-list{list-style:none;padding:0;display:grid;gap:.6rem}
+.links-list{list-style:none;padding:0;display:grid;grid-template-columns:minmax(0,1fr);gap:.6rem}
 .links-list a{display:flex;justify-content:space-between;gap:1rem;padding:.9rem 1.1rem;border-radius:12px;background:rgba(45,42,99,.55);border:1px solid rgba(255,244,225,.09);color:var(--cream);text-decoration:none}
 .links-list a:hover{border-color:var(--peach)}
-.links-list span{color:var(--muted)}
+.links-list span{color:var(--muted);min-width:0;overflow-wrap:anywhere;text-align:right}
 
 /* Footer */
 .site-footer{border-top:1px solid rgba(255,244,225,.08);background:rgba(11,10,36,.6);padding:2rem 0;font-size:.9rem;color:var(--muted)}
@@ -121,3 +121,19 @@ section{padding:clamp(2.5rem,6vw,4.5rem) 0}
 }
 
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+/* Analytics consent banner (only shown to likely European visitors) and privacy page switch */
+.consent{position:fixed;left:0;right:0;bottom:0;z-index:20;padding:.8rem 0 calc(.8rem + env(safe-area-inset-bottom));background:var(--dusk);border-top:1px solid rgba(242,164,119,.45);box-shadow:0 -8px 28px rgba(11,10,36,.45);color:var(--cream);font-size:.92rem}
+.consent-inner{width:min(100% - 2.5rem,var(--max));margin-inline:auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.6rem 1.2rem}
+.consent-text{margin:0;flex:1 1 22rem;line-height:1.55}
+.consent-text strong{color:var(--peach);font-weight:500}
+.consent-text a{color:var(--peach)}
+.consent-actions{display:flex;gap:.6rem;flex-wrap:wrap}
+.consent-btn{font:inherit;font-weight:500;padding:.55rem 1.2rem;min-width:6.5rem;border-radius:999px;cursor:pointer;border:1px solid var(--cream);background:var(--cream);color:var(--night)}
+.consent-btn[data-choice="denied"]{background:transparent;color:var(--cream)}
+.consent-btn:hover{background:var(--gold);border-color:var(--gold);color:var(--night)}
+html.has-consent body{padding-bottom:9rem}
+@media (min-width:48rem){html.has-consent body{padding-bottom:5rem}}
+.switch{display:flex;align-items:flex-start;gap:.75rem;cursor:pointer;font-weight:500}
+.switch input{width:1.3rem;height:1.3rem;margin:.2rem 0 0;flex:none;accent-color:var(--peach);cursor:pointer}
+.switch-status{color:var(--muted);font-size:.92rem;margin:.5rem 0 0}
