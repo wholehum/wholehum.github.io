@@ -19,6 +19,9 @@
     try { localStorage.setItem(KEY, value); } catch (e) { /* storage blocked: choice lasts for this page only */ }
     window['ga-disable-' + GA_ID] = (value === 'denied');
     gtagSafe('consent', 'update', { analytics_storage: value });
+    // EEA/UK/CH (Consent Mode basic): gtag.js loads only now, on Accept. Decline keeps it unloaded.
+    if (value === 'granted' && typeof window.whLoadGA === 'function') window.whLoadGA();
+    else if (value === 'denied' && window.whNeedsConsent && !window.whGaLoaded) window.whGaHold = true;
   }
   window.whAnalyticsChoice = setChoice;
   // Custom events only after consent: an explicit Accept, or (outside the consent region) no choice and no Decline.

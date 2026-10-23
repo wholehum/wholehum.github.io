@@ -56,10 +56,11 @@ Two analytics tools run on **every page** (including `404.html`; the session tem
 - sets `ads_data_redaction`;
 - if the visitor's time zone is European (`Europe/*`, Iceland, Canary/Madeira/Azores/Faroe, Cyprus), sets `window.whNeedsConsent` and keeps analytics denied until they answer the banner (time zone is the only reliable client-side hint that doesn't need a third-party lookup; Google applies the region defaults itself by IP);
 - applies a saved choice from `localStorage['wh-analytics-consent']` (`granted` / `denied`). An explicit `denied` also sets `window['ga-disable-G-04TF991ZRR'] = true`, so Google Analytics sends nothing at all;
-- runs `gtag('config', 'G-04TF991ZRR', {allow_google_signals: false, allow_ad_personalization_signals: false, cookie_expires: 34128000 /* 13 months */, cookie_flags: 'SameSite=Lax;Secure'})`, then loads `gtag.js` async.
+- for those likely European visitors (time zone, above) uses **Consent Mode basic**: `window.whGaHold` is set unless the saved choice is `granted`, so `gtag.js` is **not loaded at all** (no request to Google, no cookieless pings) and `gtag('event', …)` calls are dropped rather than queued. Accept (banner or privacy switch) calls `window.whLoadGA()`, which loads `gtag.js` then; Decline keeps it unloaded on this and later visits;
+- runs `gtag('config', 'G-04TF991ZRR', {allow_google_signals: false, allow_ad_personalization_signals: false, cookie_expires: 34128000 /* 13 months */, cookie_flags: 'SameSite=Lax;Secure'})`, then (everyone else, as before) loads `gtag.js` async via `window.whLoadGA()` (a script element added from the inline block; there is no separate `<script src>` tag).
 
 **`assets/js/analytics.js`** (loaded with `defer` just before the Cloudflare beacon; path `../assets/js/analytics.js` in `learn/` and `sessions/`, `/assets/js/analytics.js` in `404.html`):
-- shows the consent banner (Accept / Decline, keyboard accessible, site colours) only when `whNeedsConsent` is set and no choice is saved; saves the choice and calls `gtag('consent', 'update', …)`;
+- shows the consent banner (Accept / Decline, keyboard accessible, site colours) only when `whNeedsConsent` is set and no choice is saved; saves the choice and calls `gtag('consent', 'update', …)`, and on Accept `window.whLoadGA()`;
 - drives the **Turn off Google Analytics on this site** switch on `privacy.html` (`#ga-toggle`);
 - sends a `youtube_click` event (`link_url` without query string or fragment, `link_platform: 'youtube'`, `link_position: 'content'`; only after consent) for clicks on links to youtube.com / youtu.be (except links with `data-link-platform` when `links.js` is loaded; those are counted by `links.js`).
 

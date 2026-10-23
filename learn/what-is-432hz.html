@@ -6,7 +6,9 @@
 <!-- Google Analytics 4 with Consent Mode v2 (details: privacy.html). Ads features off. -->
 <script>
 window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
+// While window.whGaHold is true (EEA/UK/CH visitor who hasn't chosen Accept) event commands are dropped, not queued,
+// so nothing from before the choice can be sent later.
+function gtag(){ if (window.whGaHold && arguments[0] === 'event') return; dataLayer.push(arguments); }
 (function () {
   var ADS_OFF = {ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied'};
   function merge(a, b) { var o = {}, k; for (k in a) o[k] = a[k]; for (k in b) o[k] = b[k]; return o; }
@@ -29,16 +31,30 @@ function gtag(){dataLayer.push(arguments);}
   }
   // An explicit "no" (banner Decline or the privacy-page switch) stops Google Analytics entirely.
   if (choice === 'denied') window['ga-disable-G-04TF991ZRR'] = true;
+  // Consent Mode basic for likely EEA/UK/CH visitors: gtag.js is not loaded at all (no request to Google, no
+  // cookieless pings) until they choose Accept; after Decline it stays unloaded on later visits too.
+  window.whGaHold = window.whNeedsConsent && choice !== 'granted';
 })();
-gtag('js', new Date());
-gtag('config', 'G-04TF991ZRR', {
-  allow_google_signals: false,
-  allow_ad_personalization_signals: false,
-  cookie_expires: 34128000,
-  cookie_flags: 'SameSite=Lax;Secure'
-});
+// Configures GA and loads gtag.js once: straight away everywhere else (same order as before), or on Accept for
+// EEA/UK/CH (analytics.js calls it after the consent update, so the first page_view is sent as granted).
+window.whLoadGA = function () {
+  if (window.whGaLoaded) return;
+  window.whGaLoaded = true;
+  window.whGaHold = false;
+  gtag('js', new Date());
+  gtag('config', 'G-04TF991ZRR', {
+    allow_google_signals: false,
+    allow_ad_personalization_signals: false,
+    cookie_expires: 34128000,
+    cookie_flags: 'SameSite=Lax;Secure'
+  });
+  var s = document.createElement('script');
+  s.async = true;
+  s.src = 'https://www.googletagmanager.com/gtag/js?id=G-04TF991ZRR';
+  document.head.appendChild(s);
+};
+if (!window.whGaHold) window.whLoadGA();
 </script>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-04TF991ZRR"></script>
 <!-- End Google Analytics -->
 <title>What Is 432Hz? Tuning, History and What Research Says | Whole Hum</title>
 <meta name="description" content="What 432Hz tuning means, how it compares with the A440 concert-pitch standard, where the idea came from, and what research does and doesn’t show.">

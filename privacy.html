@@ -6,7 +6,9 @@
 <!-- Google Analytics 4 with Consent Mode v2 (details: privacy.html). Ads features off. -->
 <script>
 window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
+// While window.whGaHold is true (EEA/UK/CH visitor who hasn't chosen Accept) event commands are dropped, not queued,
+// so nothing from before the choice can be sent later.
+function gtag(){ if (window.whGaHold && arguments[0] === 'event') return; dataLayer.push(arguments); }
 (function () {
   var ADS_OFF = {ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied'};
   function merge(a, b) { var o = {}, k; for (k in a) o[k] = a[k]; for (k in b) o[k] = b[k]; return o; }
@@ -29,16 +31,30 @@ function gtag(){dataLayer.push(arguments);}
   }
   // An explicit "no" (banner Decline or the privacy-page switch) stops Google Analytics entirely.
   if (choice === 'denied') window['ga-disable-G-04TF991ZRR'] = true;
+  // Consent Mode basic for likely EEA/UK/CH visitors: gtag.js is not loaded at all (no request to Google, no
+  // cookieless pings) until they choose Accept; after Decline it stays unloaded on later visits too.
+  window.whGaHold = window.whNeedsConsent && choice !== 'granted';
 })();
-gtag('js', new Date());
-gtag('config', 'G-04TF991ZRR', {
-  allow_google_signals: false,
-  allow_ad_personalization_signals: false,
-  cookie_expires: 34128000,
-  cookie_flags: 'SameSite=Lax;Secure'
-});
+// Configures GA and loads gtag.js once: straight away everywhere else (same order as before), or on Accept for
+// EEA/UK/CH (analytics.js calls it after the consent update, so the first page_view is sent as granted).
+window.whLoadGA = function () {
+  if (window.whGaLoaded) return;
+  window.whGaLoaded = true;
+  window.whGaHold = false;
+  gtag('js', new Date());
+  gtag('config', 'G-04TF991ZRR', {
+    allow_google_signals: false,
+    allow_ad_personalization_signals: false,
+    cookie_expires: 34128000,
+    cookie_flags: 'SameSite=Lax;Secure'
+  });
+  var s = document.createElement('script');
+  s.async = true;
+  s.src = 'https://www.googletagmanager.com/gtag/js?id=G-04TF991ZRR';
+  document.head.appendChild(s);
+};
+if (!window.whGaHold) window.whLoadGA();
 </script>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-04TF991ZRR"></script>
 <!-- End Google Analytics -->
 <title>Privacy | Whole Hum</title>
 <meta name="description" content="How the Whole Hum website uses Cloudflare Web Analytics and Google Analytics, what is collected, how long it is kept, and how to turn analytics off.">
@@ -82,7 +98,7 @@ gtag('config', 'G-04TF991ZRR', {
 <article class="article read">
   <header>
     <h1>Privacy</h1>
-    <p class="meta">How this site measures visits &middot; Updated October 22, 2026</p>
+    <p class="meta">How this site measures visits &middot; Updated October 23, 2026</p>
   </header>
 
   <p>We want to know which pages are useful so we can make better ones. We do that with two analytics tools, both set up to collect as little as possible. We don&rsquo;t sell data, we don&rsquo;t run ads on this site, and we never see your name or email unless you write to us.</p>
@@ -98,7 +114,7 @@ gtag('config', 'G-04TF991ZRR', {
     <li><strong>Advertising features are off.</strong> Google signals, ad personalisation and links to Google Ads are all turned off, and no advertising cookies are set.</li>
     <li><strong>We only see totals.</strong> We look at reports such as &ldquo;how many people read this page&rdquo;. We can&rsquo;t see who you are.</li>
     <li><strong>Data is kept for 14 months.</strong> Google Analytics deletes the event-level data tied to these cookies after 14 months. Totals in standard reports (for example, monthly page views) remain.</li>
-    <li><strong>Visitors in the EEA, UK and Switzerland are asked first.</strong> In those regions, Google Analytics doesn&rsquo;t set cookies unless you choose Accept on the banner.</li>
+    <li><strong>Visitors in the EEA, UK and Switzerland are asked first.</strong> In those regions, Google Analytics doesn&rsquo;t load, set cookies or send anything to Google unless you choose Accept on the banner. If you choose Decline, it stays off on this visit and later ones.</li>
   </ul>
   <p>Google processes this data under its own terms. See <a href="https://policies.google.com/technologies/partner-sites">how Google uses information from sites that use its services</a> and <a href="https://policies.google.com/privacy">Google&rsquo;s privacy policy</a>.</p>
 
