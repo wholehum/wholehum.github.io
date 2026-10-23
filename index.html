@@ -69,19 +69,6 @@
   </div>
 </section>
 
-<section class="section somatic-reset" aria-labelledby="somatic-title">
-    <div class="wrap">
-        <div class="widget-card">
-            <h2 id="somatic-title" class="widget-title">Somatic Reset Space</h2>
-            <div class="breathing-container">
-                <div class="breathing-circle" id="circle"></div>
-            </div>
-            <div class="timer-text" id="status-text">Press Start to Begin Pacing</div>
-            <button class="control-btn" id="start-btn" onclick="toggleTimer()">Start</button>
-        </div>
-    </div>
-</section>
-
 <section aria-labelledby="intro-title">
   <div class="wrap">
     <h2 id="intro-title">Slow down, reset, feel more like yourself</h2>
@@ -98,6 +85,21 @@
       <p><a class="btn ghost" href="sessions/432hz-deep-sleep.html">Read the listening guide</a></p>
     </div>
 <div class="video"><iframe src="https://www.youtube-nocookie.com/embed/yZ9LNX3weBQ" title="432Hz Sleep Music | Soft Crystal Bowls &amp; Gentle Rain | 3 Hours" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+  </div>
+</section>
+
+<section class="somatic-reset" aria-labelledby="somatic-title">
+  <div class="wrap">
+    <div class="card widget-card">
+      <h2 id="somatic-title" class="widget-title">Somatic Reset Space</h2>
+      <p class="widget-intro">A simple breathing pacer: breathe in as the circle grows, then breathe out slowly with a soft hum as it settles, about four seconds each way.</p>
+      <div class="breathing-container" aria-hidden="true">
+        <div class="breathing-circle" id="circle"></div>
+      </div>
+      <p class="timer-text" id="status-text" aria-live="polite">Press Start when you&rsquo;re ready</p>
+      <button type="button" class="control-btn" id="start-btn">Start</button>
+      <p class="widget-note">Breathe comfortably; stop if you feel lightheaded.</p>
+    </div>
   </div>
 </section>
 
@@ -125,53 +127,51 @@
     <p>&copy; 2026 Whole Hum &middot; <a href="about.html">About</a></p>
   </div>
 </footer>
-  <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            let isRunning = false;
-            let intervalId = null;
-            
-            const circle = document.getElementById('circle');
-            const statusText = document.getElementById('status-text');
-            const startBtn = document.getElementById('start-btn');
+<script>
+(function () {
+  var circle = document.getElementById('circle');
+  var statusText = document.getElementById('status-text');
+  var btn = document.getElementById('start-btn');
+  if (!circle || !statusText || !btn) return;
 
-            // Explicit event listener fallback binding
-            if (startBtn) {
-                startBtn.addEventListener('click', toggleTimer);
-            }
+  var PHASE_MS = 4000;      // 4 s in, 4 s out
+  var running = false;
+  var phaseTimer = null;    // the one pending phase change; cleared on pause
 
-            function toggleTimer() {
-                if (isRunning) {
-                    clearInterval(intervalId);
-                    circle.style.transform = 'scale(1)';
-                    circle.style.opacity = '0.2';
-                    statusText.innerText = 'Session Paused';
-                    startBtn.innerText = 'Start';
-                    isRunning = false;
-                } else {
-                    isRunning = true;
-                    startBtn.innerText = 'Pause';
-                    runBreathingCycle();
-                    intervalId = setInterval(runBreathingCycle, 8000);
-                }
-            }
+  function setPhase(phase) {
+    circle.classList.toggle('is-inhale', phase === 'inhale');
+    if (phase === 'inhale') statusText.textContent = 'Breathe in\u2026';
+    else if (phase === 'exhale') statusText.textContent = 'Exhale & hum\u2026';
+  }
 
-            function runBreathingCycle() {
-                // Inhale Phase (4 Seconds)
-                statusText.innerText = 'Inhale deeply...';
-                circle.style.transform = 'scale(2.2)';
-                circle.style.opacity = '0.6';
-                circle.style.transition = 'all 4s ease-in-out';
-                
-                // Hum / Exhale Phase (4 Seconds)
-                setTimeout(() => {
-                    if (!isRunning) return;
-                    statusText.innerText = 'Exhale & Hum... 🎧';
-                    circle.style.transform = 'scale(1)';
-                    circle.style.opacity = '0.2';
-                    circle.style.transition = 'all 4s ease-in-out';
-                }, 4000);
-            }
-        });
-    </script>
+  function cycle(phase) {
+    setPhase(phase);
+    phaseTimer = setTimeout(function () {
+      cycle(phase === 'inhale' ? 'exhale' : 'inhale');
+    }, PHASE_MS);
+  }
+
+  function start() {
+    running = true;
+    btn.textContent = 'Pause';
+    btn.setAttribute('aria-pressed', 'true');
+    cycle('inhale');
+  }
+
+  function pause() {
+    running = false;
+    clearTimeout(phaseTimer);
+    phaseTimer = null;
+    setPhase('rest');
+    statusText.textContent = 'Paused. Press Resume when you\u2019re ready.';
+    btn.textContent = 'Resume';
+    btn.setAttribute('aria-pressed', 'false');
+  }
+
+  btn.addEventListener('click', function () {
+    if (running) pause(); else start();
+  });
+})();
+</script>
 </body>
 </html>

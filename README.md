@@ -1,9 +1,9 @@
 # Whole Hum website
 
-The static site for **https://wholehum.github.io/**. It's plain HTML and CSS, with no build step, no JavaScript framework and no tracking. Fonts (Poppins, under the SIL Open Font License; see `assets/fonts/OFL.txt`) are self-hosted, so the site never contacts Google Fonts.
+The static site for **https://wholehum.github.io/**. It's plain HTML and CSS, with no build step, no JavaScript framework and no tracking. The only script is a small inline one at the bottom of `index.html` that runs the Somatic Reset Space breathing pacer; the rest of the site works without JavaScript. Fonts (Poppins, under the SIL Open Font License; see `assets/fonts/OFL.txt`) are self-hosted, so the site never contacts Google Fonts.
 
 ```
-index.html                         Home: hero, intro, Latest session slot, 5 uses
+index.html                         Home: hero, intro, Latest session slot, breathing pacer, 5 uses
 about.html                         About, social links, contact, AI disclosure
 sessions/432hz-deep-sleep.html     Session #1 (DRAFT: noindex until the video is live)
 sessions/_template.html            Copy this for every new session
