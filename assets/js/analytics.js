@@ -21,6 +21,13 @@
     gtagSafe('consent', 'update', { analytics_storage: value });
   }
   window.whAnalyticsChoice = setChoice;
+  // Custom events only after consent: an explicit Accept, or (outside the consent region) no choice and no Decline.
+  function analyticsAllowed() {
+    var c = getChoice();
+    if (c === 'denied') return false;
+    if (c === 'granted') return true;
+    return !window.whNeedsConsent;
+  }
 
   /* ---------- Consent banner (shown only when the head script flagged a likely European visitor) ----------
      The markup below is a fixed string: no URL, choice or visitor data is ever put into it. The Privacy
@@ -115,7 +122,14 @@
     if (window.whLinkEvents && a.hasAttribute('data-link-platform')) return;
     var host = (a.hostname || '').toLowerCase();
     if (/(^|\.)youtube\.com$/.test(host) || host === 'youtu.be') {
-      gtagSafe('event', 'youtube_click', { link_url: a.href });
+      if (!analyticsAllowed()) return;
+      // link_platform / link_position are fixed literals (match links.js select_content). link_url is the
+      // link's own address with any query string or fragment removed; no referrer or page data is added.
+      gtagSafe('event', 'youtube_click', {
+        link_url: a.origin + a.pathname,
+        link_platform: 'youtube',
+        link_position: 'content'
+      });
     }
   }, true);
 
