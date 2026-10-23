@@ -20,6 +20,8 @@
      page_view. Once a visitor opts out with GA already loaded, sendBeacon/fetch calls to Google Analytics
      are dropped while ga-disable is true (they resume if the visitor turns GA back on). Fixed pattern only. */
   var GA_HIT = /^https:\/\/([a-z0-9-]+\.)*(google-analytics\.com|analytics\.google\.com)\//;
+  /* Tag Manager diagnostics pings (/a, /td) are dropped under the same rule; /gtag/js is not matched. */
+  var GTM_PING = /^https:\/\/www\.googletagmanager\.com\/(a|td)([?\/]|$)/;
   function gaOff() { return window['ga-disable-' + GA_ID] === true; }
   function guardQueuedHits() {
     if (window.whGaHitGuard) return;
@@ -28,7 +30,7 @@
     if (nav && typeof nav.sendBeacon === 'function') {
       var beacon = nav.sendBeacon;
       nav.sendBeacon = function (url) {
-        if (gaOff() && GA_HIT.test(String(url))) return true;
+        if (gaOff() && (GA_HIT.test(String(url)) || GTM_PING.test(String(url)))) return true;
         return beacon.apply(nav, arguments);
       };
     }
@@ -36,7 +38,7 @@
       var origFetch = window.fetch;
       window.fetch = function (input) {
         var url = typeof input === 'string' ? input : (input && input.url) || String(input);
-        if (gaOff() && GA_HIT.test(url)) return Promise.resolve(new Response(null, { status: 204 }));
+        if (gaOff() && (GA_HIT.test(url) || GTM_PING.test(url))) return Promise.resolve(new Response(null, { status: 204 }));
         return origFetch.apply(this, arguments);
       };
     }
