@@ -15,9 +15,36 @@
   function getChoice() {
     try { return localStorage.getItem(KEY); } catch (e) { return null; }
   }
+  /* gtag.js batches hits and sends them a few seconds later. ga-disable and a consent update stop new
+     hits but not ones already queued, so an opt-out shortly after a page loads could still send that page's
+     page_view. Once a visitor opts out with GA already loaded, sendBeacon/fetch calls to Google Analytics
+     are dropped while ga-disable is true (they resume if the visitor turns GA back on). Fixed pattern only. */
+  var GA_HIT = /^https:\/\/([a-z0-9-]+\.)*(google-analytics\.com|analytics\.google\.com)\//;
+  function gaOff() { return window['ga-disable-' + GA_ID] === true; }
+  function guardQueuedHits() {
+    if (window.whGaHitGuard) return;
+    window.whGaHitGuard = true;
+    var nav = window.navigator;
+    if (nav && typeof nav.sendBeacon === 'function') {
+      var beacon = nav.sendBeacon;
+      nav.sendBeacon = function (url) {
+        if (gaOff() && GA_HIT.test(String(url))) return true;
+        return beacon.apply(nav, arguments);
+      };
+    }
+    if (typeof window.fetch === 'function') {
+      var origFetch = window.fetch;
+      window.fetch = function (input) {
+        var url = typeof input === 'string' ? input : (input && input.url) || String(input);
+        if (gaOff() && GA_HIT.test(url)) return Promise.resolve(new Response(null, { status: 204 }));
+        return origFetch.apply(this, arguments);
+      };
+    }
+  }
   function setChoice(value) {
     try { localStorage.setItem(KEY, value); } catch (e) { /* storage blocked: choice lasts for this page only */ }
     window['ga-disable-' + GA_ID] = (value === 'denied');
+    if (value === 'denied' && window.whGaLoaded) guardQueuedHits();
     gtagSafe('consent', 'update', { analytics_storage: value });
     // EEA/UK/CH (Consent Mode basic): gtag.js loads only now, on Accept. Decline keeps it unloaded.
     if (value === 'granted' && typeof window.whLoadGA === 'function') window.whLoadGA();
