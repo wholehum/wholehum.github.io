@@ -8,7 +8,6 @@ about.html                         About, social links, contact, AI disclosure
 privacy.html                       Privacy: what analytics we use, retention, opt-out, contact
 links/index.html                   Redirect only: /links/ -> home page (noindex, canonical home, not in sitemap)
 sessions/432hz-deep-sleep.html     Session #1 (DRAFT: noindex until the video is live)
-sessions/_template.html            Copy this for every new session
 learn/what-is-432hz.html           Explainer
 learn/what-are-binaural-beats.html Explainer
 404.html  robots.txt  sitemap.xml  site.webmanifest  favicon.ico  .nojekyll
@@ -47,7 +46,7 @@ cd site && python3 -m http.server 8000
 
 ## Analytics and privacy
 
-Two analytics tools run on **every page** (including `404.html` and `sessions/_template.html`, so pages copied from the template get them automatically):
+Two analytics tools run on **every page** (including `404.html`; the session template `/workspace/wholehum/site-templates/session-template.html` carries them too, so pages copied from it get them automatically):
 
 1. **Cloudflare Web Analytics** (cookieless). The beacon `<script>` sits just before `</body>`.
 2. **Google Analytics 4**, Measurement ID `G-04TF991ZRR` (property 560375939, under wholehum@gmail.com). Property settings: Google signals off, data retention 14 months, no Google Ads links. Keep it that way, or update `privacy.html` first.
@@ -62,11 +61,11 @@ Two analytics tools run on **every page** (including `404.html` and `sessions/_t
 **`assets/js/analytics.js`** (loaded with `defer` just before the Cloudflare beacon; path `../assets/js/analytics.js` in `learn/` and `sessions/`, `/assets/js/analytics.js` in `404.html`):
 - shows the consent banner (Accept / Decline, keyboard accessible, site colours) only when `whNeedsConsent` is set and no choice is saved; saves the choice and calls `gtag('consent', 'update', …)`;
 - drives the **Turn off Google Analytics on this site** switch on `privacy.html` (`#ga-toggle`);
-- sends a `youtube_click` event (`link_url`) for clicks on links to youtube.com / youtu.be (except links with `data-link-platform` when `links.js` is loaded; those are counted by `links.js`).
+- sends a `youtube_click` event (`link_url` without query string or fragment, `link_platform: 'youtube'`, `link_position: 'content'`; only after consent) for clicks on links to youtube.com / youtu.be (except links with `data-link-platform` when `links.js` is loaded; those are counted by `links.js`).
 
 The breathing pacer script in `index.html` sends `breath_pacer_start` once per page view, on the first Start. **`assets/js/links.js`** (on every page, before `analytics.js`) sends `select_content` (`content_type: 'bio_link'`, `content_id`, `link_platform`, `link_position`, `link_url`) for clicks on any link with a `data-link-platform` attribute: the social icon band under the header (`data-link-position="band"`) and the footer Google Site and email links (`"footer"`). It sets `window.whLinkEvents`, and `analytics.js` then skips those links, so a YouTube band click is one event, not two. Band links carry `utm_source=wholehum_site&utm_medium=bio_link&utm_campaign=social_band&utm_content=<platform>`; the footer Google Site link uses `utm_campaign=site_footer&utm_content=google_site` (no UTM on the mailto). The same script pins and shrinks the header + band after ~24px of scroll (`.is-compact`, IntersectionObserver sentinel, no layout shift). The old `/links/` bio page (campaign `links_page`) is now a redirect to the home page. GA4 enhanced measurement covers page views, scrolls and outbound clicks. To see `link_url` in reports, register it as an event-scoped custom dimension in GA4 (Admin → Custom definitions).
 
-**Rules:** every new page needs the GA4 head block, the `links.js` and `analytics.js` tags, the Cloudflare beacon and the footer **Privacy** link (copying `_template.html` gives you all four). If you add any new tracking, cookies, embeds or third-party services, update `privacy.html` (and its "Updated" date) in the same commit. Never turn on Google signals, Ads links or ad personalisation without updating the privacy page and the consent defaults.
+**Rules:** every new page needs the GA4 head block, the `links.js` and `analytics.js` tags, the Cloudflare beacon and the footer **Privacy** link (copying the session template gives you all four). If you add any new tracking, cookies, embeds or third-party services, update `privacy.html` (and its "Updated" date) in the same commit. Never turn on Google signals, Ads links or ad personalisation without updating the privacy page and the consent defaults.
 
 ## When video #1 goes live (session page checklist)
 
@@ -80,7 +79,7 @@ Edit `sessions/432hz-deep-sleep.html` and `index.html`:
 
 ## Add a new session page
 
-1. Copy `sessions/_template.html` to `sessions/<slug>.html`. Use a short, keyword-rich slug, e.g. `528hz-morning-calm.html`.
+1. Copy the session template `/workspace/wholehum/site-templates/session-template.html` (kept outside this repo so it is never published; GitHub Pages serves every file in the repo because of `.nojekyll`) to `sessions/<slug>.html`. Use a short, keyword-rich slug, e.g. `528hz-morning-calm.html`.
 2. Search for ALL-CAPS placeholders and replace them:
    - `<title>`: about 50–65 characters, ending in `| Whole Hum`.
    - `<meta name="description">`, `og:description`, `twitter:description`: 120–155 characters, unique per page.
@@ -97,7 +96,7 @@ Edit `sessions/432hz-deep-sleep.html` and `index.html`:
 
 ## Links on everything (rule)
 
-**Every new page and every video description must include the full Whole Hum link set below.** The master list lives in `/workspace/wholehum/brand/links.md` (it also has the ready-to-paste block for video descriptions). If a link changes, update `links.md` first, then the footer on every page (including `404.html`, `privacy.html` and `sessions/_template.html`), the About page's "Find Whole Hum" list, the social icon band in every page's header (keep the UTM tags and `data-link-*` attributes), the `sameAs` list in `index.html`, and `SOCIAL` in `tools/build_site.py`.
+**Every new page and every video description must include the full Whole Hum link set below.** The master list lives in `/workspace/wholehum/brand/links.md` (it also has the ready-to-paste block for video descriptions). If a link changes, update `links.md` first, then the footer on every page (including `404.html`, `privacy.html` and the session template `/workspace/wholehum/site-templates/session-template.html`), the About page's "Find Whole Hum" list, the social icon band in every page's header (keep the UTM tags and `data-link-*` attributes), the `sameAs` list in `index.html`, and `SOCIAL` in `tools/build_site.py`.
 
 - YouTube: https://www.youtube.com/@wholehum
 - Website: https://wholehum.github.io/
@@ -110,7 +109,7 @@ Edit `sessions/432hz-deep-sleep.html` and `index.html`:
 - Google Site: https://sites.google.com/view/wholehum
 - Email: wholehum@gmail.com
 
-New session pages copied from `sessions/_template.html` already carry the full footer.
+New session pages copied from the session template already carry the full footer.
 
 ## Writing rules (keep these)
 
