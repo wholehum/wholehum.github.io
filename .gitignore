@@ -8,3 +8,4 @@
 *.unsigned.mp4
 *.UNSIGNED.mp4
 c2pa-test/
+*.signing.mp4
