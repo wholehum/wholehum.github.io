@@ -6,6 +6,7 @@ The static site for **https://wholehum.github.io/**. It's plain HTML and CSS, wi
 index.html                         Home: hero, intro, Latest session slot, breathing pacer, 5 uses
 about.html                         About, social links, contact, AI disclosure
 privacy.html                       Privacy: what analytics we use, retention, opt-out, contact
+links/index.html                   Bio link page (/links/): every official profile as big buttons, UTM-tagged
 sessions/432hz-deep-sleep.html     Session #1 (DRAFT: noindex until the video is live)
 sessions/_template.html            Copy this for every new session
 learn/what-is-432hz.html           Explainer
@@ -63,7 +64,7 @@ Two analytics tools run on **every page** (including `404.html` and `sessions/_t
 - drives the **Turn off Google Analytics on this site** switch on `privacy.html` (`#ga-toggle`);
 - sends a `youtube_click` event (`link_url`) for clicks on links to youtube.com / youtu.be.
 
-The breathing pacer script in `index.html` sends `breath_pacer_start` once per page view, on the first Start. GA4 enhanced measurement covers page views, scrolls and outbound clicks. To see `link_url` in reports, register it as an event-scoped custom dimension in GA4 (Admin → Custom definitions).
+The breathing pacer script in `index.html` sends `breath_pacer_start` once per page view, on the first Start. On `links/index.html`, `assets/js/links.js` sends `select_content` (`content_type: 'bio_link'`, `content_id`, `link_platform`, `link_position`, `link_url`) for clicks on any link with a `data-link-platform` attribute. Outbound links there carry `utm_source=wholehum_site&utm_medium=bio_link&utm_campaign=links_page&utm_content=<platform>` (not the internal Website link or the mailto). GA4 enhanced measurement covers page views, scrolls and outbound clicks. To see `link_url` in reports, register it as an event-scoped custom dimension in GA4 (Admin → Custom definitions).
 
 **Rules:** every new page needs the GA4 head block, the `analytics.js` tag, the Cloudflare beacon and the footer **Privacy** link (copying `_template.html` gives you all four). If you add any new tracking, cookies, embeds or third-party services, update `privacy.html` (and its "Updated" date) in the same commit. Never turn on Google signals, Ads links or ad personalisation without updating the privacy page and the consent defaults.
 
@@ -96,7 +97,7 @@ Edit `sessions/432hz-deep-sleep.html` and `index.html`:
 
 ## Links on everything (rule)
 
-**Every new page and every video description must include the full Whole Hum link set below.** The master list lives in `/workspace/wholehum/brand/links.md` (it also has the ready-to-paste block for video descriptions). If a link changes, update `links.md` first, then the footer on every page (including `404.html`, `privacy.html` and `sessions/_template.html`), the About page's "Find Whole Hum" list, the `sameAs` list in `index.html`, and `SOCIAL` in `tools/build_site.py`.
+**Every new page and every video description must include the full Whole Hum link set below.** The master list lives in `/workspace/wholehum/brand/links.md` (it also has the ready-to-paste block for video descriptions). If a link changes, update `links.md` first, then the footer on every page (including `404.html`, `privacy.html` and `sessions/_template.html`), the About page's "Find Whole Hum" list, the buttons and footer in `links/index.html` (keep the UTM tags), the `sameAs` list in `index.html`, and `SOCIAL` in `tools/build_site.py`.
 
 - YouTube: https://www.youtube.com/@wholehum
 - Website: https://wholehum.github.io/
@@ -114,7 +115,7 @@ New session pages copied from `sessions/_template.html` already carry the full f
 ## Writing rules (keep these)
 
 - No health or medical claims ("heals", "cures", "treats", "repairs DNA", and so on). Describe the sound and cite sources for facts.
-- Keep the not-medical-advice note and the footer disclosure: *Sound and visuals are made with original and AI-assisted tools. Whole Hum is for relaxation and wellbeing and isn't medical advice.*
+- Keep the not-medical-advice note and the footer disclosure: *Audio is AI-generated and made with code (algorithmic synthesis); visuals are AI-assisted. For relaxation and listening enjoyment only. Not medical advice or treatment. Visuals created with Grok.*
 - Every image needs meaningful `alt` text (use `alt=""` only for purely decorative images).
 
 ## Notes

@@ -137,3 +137,24 @@ html.has-consent body{padding-bottom:9rem}
 .switch{display:flex;align-items:flex-start;gap:.75rem;cursor:pointer;font-weight:500}
 .switch input{width:1.3rem;height:1.3rem;margin:.2rem 0 0;flex:none;accent-color:var(--peach);cursor:pointer}
 .switch-status{color:var(--muted);font-size:.92rem;margin:.5rem 0 0}
+
+/* Bio link page (/links/) */
+.bio{width:min(100% - 2.5rem,32rem);margin-inline:auto;padding:clamp(2rem,7vw,3.5rem) 0 2.5rem;text-align:center}
+.bio-head{margin-bottom:1.6rem}
+.bio-logo{width:112px;height:112px;border-radius:50%;margin:0 auto 1rem;box-shadow:0 0 32px rgba(242,164,119,.28)}
+.bio h1{font-size:clamp(1.6rem,6vw,2.1rem);font-weight:500;letter-spacing:.22em;text-transform:uppercase;margin:0 0 .3rem}
+.bio-tagline{color:var(--peach);font-size:1.05rem;margin:0 0 .5rem}
+.bio-lede{color:var(--muted);font-size:.95rem;margin:0 auto;max-width:26rem}
+.bio-section{padding:0;margin:0 0 1.6rem}
+.bio-label{font-size:.8rem;font-weight:500;letter-spacing:.32em;text-transform:uppercase;color:var(--muted);margin:0 0 .7rem}
+.bio-links{list-style:none;margin:0;padding:0;display:grid;gap:.7rem}
+.bio-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.1rem;min-height:3.6rem;padding:.75rem 1.2rem;border-radius:999px;background:rgba(45,42,99,.6);border:1px solid rgba(255,244,225,.14);color:var(--cream);text-decoration:none;line-height:1.35;transition:transform .2s ease,border-color .2s ease,background .2s ease}
+.bio-btn:hover{color:var(--cream);border-color:var(--peach);background:rgba(45,42,99,.85);transform:translateY(-1px)}
+.bio-name{font-weight:500;font-size:1.02rem}
+.bio-handle{color:var(--muted);font-size:.82rem;overflow-wrap:anywhere}
+.bio-feature{border-radius:var(--radius);background:var(--cream);border-color:var(--cream);color:var(--night)}
+.bio-feature .bio-handle{color:var(--violet)}
+.bio-feature:hover{background:var(--gold);border-color:var(--gold);color:var(--night)}
+.bio-fine{font-size:.8rem;color:var(--muted);margin-top:2rem}
+.bio-fine p{margin:0 0 .3rem}
+@media (prefers-reduced-motion:reduce){.bio-btn:hover{transform:none}}
