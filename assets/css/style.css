@@ -41,7 +41,7 @@ p,ul,ol{margin:0 0 1.1em}
 /* Header */
 .site-header{position:sticky;top:0;z-index:5;background:rgba(11,10,36,.82);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,244,225,.08)}
 .site-header .wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.7rem 0;flex-wrap:wrap}
-.brand{display:flex;align-items:center;gap:.6rem;color:var(--cream);text-decoration:none;font-weight:500;letter-spacing:.22em;text-transform:uppercase;font-size:.95rem}
+.brand{display:flex;align-items:center;gap:.6rem;color:var(--cream);text-decoration:none;font-weight:300;letter-spacing:.22em;text-transform:uppercase;font-size:.95rem}
 .brand img{width:36px;height:36px;border-radius:50%}
 .nav ul{list-style:none;margin:0;padding:0;display:flex;gap:.25rem 1.1rem;flex-wrap:wrap}
 .nav a{color:var(--muted);text-decoration:none;font-size:.95rem;padding:.3rem 0}
